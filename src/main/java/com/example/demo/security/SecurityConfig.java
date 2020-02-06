@@ -22,11 +22,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private DataSource datasource;
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		//	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		 auth.jdbcAuthentication().dataSource(datasource)
 		.usersByUsernameQuery("select u.username as principal, u.password as credentials,u.enabled from users u where u.username=?" )
 		.authoritiesByUsernameQuery("select u.username as principal,  r.role_name as role from users u, roles r where u.user_id = r.user_id and u.username=? ")
-		.rolePrefix("ROLE_").passwordEncoder(new MessageDigestPasswordEncoder("MD5") );	
+		.rolePrefix("ROLE_");	
 		 
 	}
 	
@@ -37,9 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout().invalidateHttpSession(true);
 		http.logout().clearAuthentication(true);
 		
-		
-
-
 	}	
-
+	
 }
